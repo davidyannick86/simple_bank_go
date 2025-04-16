@@ -25,7 +25,7 @@ jobs:
       - name: Build (release mode)
         run: |
           mkdir -p bin
-          go build -ldflags="-s -w" -trimpath -o bin/app ./cmd/app
+          go build -ldflags="-s -w" -trimpath -o bin/app .
 
       - name: Test
         run: go test -v ./...
