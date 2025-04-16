@@ -140,6 +140,10 @@ tasks:
     - echo "Migrations down completed."
     silent: true
 
+  ##################################################
+  # SQLC Tasks
+  ##################################################
+
   sqlc:
     desc: |
       To run it : task sqlc
