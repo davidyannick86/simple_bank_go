@@ -1,0 +1,150 @@
+version: '3'
+
+vars:
+  APP_NAME: "Simple Bank"
+  POSTGRE_CONTAINER_NAME: "postgres_simplebank"
+  POSTGRE_URL: "postgresql://postgres:password@localhost:5432/simple_bank?sslmode=disable"
+  MIGRATIONS_DIR: "./db/migrations"
+
+tasks:
+
+  ##################################################
+  # Docker Tasks
+  ##################################################
+  compose:
+    desc: "Run docker compose"
+    cmds:
+    - docker-compose up -d --force-recreate
+
+  logs-psql:
+    desc: "Show logs for postgres"
+    preconditions:
+    - sh: docker ps | grep {{.POSTGRE_CONTAINER_NAME}} > /dev/null
+      msg: "Postgres container is not running. Please start it first."
+    requires:
+      vars:
+      - POSTGRE_CONTAINER_NAME
+    cmds:
+    - docker logs {{.POSTGRE_CONTAINER_NAME}}
+
+  stop-psql:
+    desc: "Stop the postgres container"
+    preconditions:
+    - sh: docker ps | grep {{.POSTGRE_CONTAINER_NAME}} > /dev/null
+      msg: "Postgres container is not running. Please start it first."
+    requires:
+      vars:
+      - POSTGRE_CONTAINER_NAME
+    cmds:
+    - docker stop {{.POSTGRE_CONTAINER_NAME}}
+    - echo "Postgres container stopped."
+
+  ##################################################
+  # Postgres Tasks
+  ##################################################
+
+  psql:
+    desc: "Run psql"
+    preconditions:
+    - sh: docker ps | grep {{.POSTGRE_CONTAINER_NAME}} > /dev/null
+      msg: "Postgres container is not running. Please start it first."
+    requires:
+      vars:
+      - POSTGRE_CONTAINER_NAME
+    cmds:
+    - docker exec -it {{.POSTGRE_CONTAINER_NAME}} psql -U postgres
+
+  create-db:
+    desc: "Create the database"
+    preconditions:
+    - sh: docker ps | grep {{.POSTGRE_CONTAINER_NAME}} > /dev/null
+      msg: "Postgres container is not running. Please start it first."
+    requires:
+      vars:
+      - POSTGRE_CONTAINER_NAME
+    cmds:
+    - echo "Creating database..."
+    - docker exec -it {{.POSTGRE_CONTAINER_NAME}} createdb -U postgres simple_bank
+    - echo "Database created."
+    silent: true
+
+  drop-db:
+    desc: "Drop the database"
+    preconditions:
+    - sh: docker ps | grep {{.POSTGRE_CONTAINER_NAME}} > /dev/null
+      msg: "Postgres container is not running. Please start it first."
+    requires:
+      vars:
+      - POSTGRE_CONTAINER_NAME
+    cmds:
+    - echo "Dropping database..."
+    - docker exec -it {{.POSTGRE_CONTAINER_NAME}} dropdb -U postgres simple_bank
+    - echo "Database dropped."
+    silent: true
+
+  dump-schema:
+    desc: "Dump the database schema"
+    preconditions:
+    - sh: docker ps | grep {{.POSTGRE_CONTAINER_NAME}} > /dev/null
+      msg: "Postgres container is not running. Please start it first."
+    requires:
+      vars:
+      - POSTGRE_CONTAINER_NAME
+    cmds:
+    - echo "Dumping schema..."
+    - docker exec -it {{.POSTGRE_CONTAINER_NAME}} pg_dump -U postgres -s simple_bank > ./db/schema.sql
+    - echo "Schema dumped."
+    silent: true
+
+  ##################################################
+  # Migration Tasks
+  ##################################################
+
+  migrate-create:
+    desc: |
+      Run all migrations up.
+      To run it : task migrate-create -- name_of_migration
+    requires:
+      vars:
+      - CLI_ARGS
+      - MIGRATIONS_DIR
+    cmds:
+    - echo "Creating migration file..."
+    - migrate create -ext sql -dir {{.MIGRATIONS_DIR}} -seq {{.CLI_ARGS}}
+    - echo "Migration file created."
+    silent: true
+
+  migrate-up:
+    desc: |
+      To run it : task migrate-up
+    requires:
+      vars:
+      - POSTGRE_URL
+      - MIGRATIONS_DIR
+    cmds:
+    - echo "Running migrations up..."
+    - migrate -path {{.MIGRATIONS_DIR}} -database {{.POSTGRE_URL}} -verbose up
+    - echo "Migrations up completed."
+    silent: true
+
+  migrate-down:
+    desc: |
+      To run it : task migrate-down
+    requires:
+      vars:
+      - POSTGRE_URL
+      - MIGRATIONS_DIR
+    cmds:
+    - echo "Running migrations down..."
+    - migrate -path {{.MIGRATIONS_DIR}} -database {{.POSTGRE_URL}} down
+    - echo "Migrations down completed."
+    silent: true
+
+  sqlc:
+    desc: |
+      To run it : task sqlc
+    cmds:
+    - echo "Running sqlc..."
+    - sqlc generate
+    - echo "sqlc completed."
+    silent: true
