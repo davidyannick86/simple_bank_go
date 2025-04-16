@@ -78,7 +78,7 @@ tasks:
       - POSTGRE_CONTAINER_NAME
     cmds:
     - echo "Dropping database..."
-    - docker exec -it {{.POSTGRE_CONTAINER_NAME}} dropdb -U postgres simple_bank
+    - docker exec -it {{.POSTGRE_CONTAINER_NAME}} dropdb -f -U postgres simple_bank
     - echo "Database dropped."
     silent: true
 
@@ -154,4 +154,17 @@ tasks:
     - echo "Running sqlc..."
     - sqlc generate
     - echo "sqlc completed."
+    silent: true
+
+  ##################################################
+  # Go Tests 
+  ##################################################
+
+  test:
+    desc: |
+      Run all tests.
+    cmds:
+    - echo "Running tests..."
+    - go test -v -cover ./...
+    - echo "Tests completed."
     silent: true

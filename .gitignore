@@ -30,3 +30,4 @@ go.work.sum
 db/sqlc
 
 docs/
+go.sum
