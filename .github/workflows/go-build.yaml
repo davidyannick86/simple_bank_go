@@ -22,8 +22,15 @@ jobs:
       - name: Install dependencies
         run: go mod download
 
-      - name: Install PostgreSQL driver
-        run: go get github.com/lib/pq
+      - name: Install test dependencies
+        run: |
+          go get github.com/lib/pq
+          go get github.com/stretchr/testify/require
+          go mod tidy
+
+      - name: Install SQLC
+        run: |
+          go install github.com/kyleconroy/sqlc/cmd/sqlc@latest
 
       - name: Build (release mode)
         run: |
