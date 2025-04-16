@@ -23,7 +23,9 @@ jobs:
         run: go mod download
 
       - name: Build (release mode)
-        run: go build -ldflags="-s -w" -trimpath -o bin/app ./...
+        run: |
+          mkdir -p bin
+          go build -ldflags="-s -w" -trimpath -o bin/app ./cmd/app
 
       - name: Test
         run: go test -v ./...
