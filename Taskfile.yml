@@ -147,6 +147,9 @@ tasks:
   sqlc:
     desc: |
       To run it : task sqlc
+    precponditions:
+    - sh: command -v sqlc > /dev/null
+      msg: SQLC is not installed. Please install it first.
     cmds:
     - echo "Running sqlc..."
     - sqlc generate
