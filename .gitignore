@@ -27,7 +27,5 @@ go.work.sum
 # Mac
 .DS_Store
 
-db/sqlc
-
 docs/
 go.sum
