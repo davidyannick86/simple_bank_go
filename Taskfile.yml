@@ -147,7 +147,7 @@ tasks:
   sqlc:
     desc: |
       Generate GO code from SQL queries.
-    precponditions:
+    preconditions:
     - sh: command -v sqlc > /dev/null
       msg: SQLC is not installed. Please install it first.
     cmds:
@@ -165,6 +165,6 @@ tasks:
       Run all tests.
     cmds:
     - echo "Running tests..."
-    - go test -v -cover ./...
+    - go test -v -cover -count=1 ./...
     - echo "Tests completed."
     silent: true
