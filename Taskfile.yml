@@ -146,7 +146,7 @@ tasks:
 
   sqlc:
     desc: |
-      To run it : task sqlc
+      Generate GO code from SQL queries.
     precponditions:
     - sh: command -v sqlc > /dev/null
       msg: SQLC is not installed. Please install it first.
