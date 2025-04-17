@@ -164,10 +164,3 @@ tasks:
     - httpyac ./api.http
     - echo "API tests completed."
     silent: true
-
-  coucou:
-    desc: |
-      Just a test task.
-    cmds:
-    - echo "Coucou ! {{.APP_NAME}} {{.CLI_ARGS}}"
-    silent: true

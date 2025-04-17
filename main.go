@@ -12,6 +12,7 @@ import (
 
 func main() {
 
+	//config, err := utils.LoadConfig(".")
 	config, err := utils.LoadConfig(".")
 
 	conn, err := sql.Open(config.DbDriver, config.DbSource)
