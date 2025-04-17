@@ -168,3 +168,14 @@ tasks:
     - go test -v -cover -count=1 ./...
     - echo "Tests completed."
     silent: true
+  ##################################################
+  # Server Tasks
+  ##################################################
+
+  server:
+    desc: |
+      Run the server.
+    cmds:
+    - echo "Running server..."
+    - go run ./
+    silent: true

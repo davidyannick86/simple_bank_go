@@ -1,0 +1,7 @@
+### Create account
+POST http://localhost:8080/accounts
+Content-Type: application/json
+{
+  "owner": "Dorian",
+  "currency": "EUR"
+}
