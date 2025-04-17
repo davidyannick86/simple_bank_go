@@ -179,3 +179,17 @@ tasks:
     - echo "Running server..."
     - go run ./
     silent: true
+
+  api-test:
+    desc: |
+      Run the API tests.
+    preconditions:
+    - sh: command -v httpyac > /dev/null
+      msg: httpyac is not installed. Please install it first.
+    - sh: lsof -i :8080 > /dev/null
+      msg: "Server is not running. Please start it first using 'task server'."
+    cmds:
+    - echo "Running API tests..."
+    - httpyac ./api.http
+    - echo "API tests completed."
+    silent: true
