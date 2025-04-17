@@ -8,7 +8,7 @@ on:
 
 jobs:
   test:
-    name: Test
+    name: CI
     runs-on: ubuntu-latest
 
     services:

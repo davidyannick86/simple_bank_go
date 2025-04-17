@@ -140,7 +140,7 @@ func TestTransferDeadLock(t *testing.T) {
 		}()
 	}
 
-	for i := 0; i < n; i++ {
+	for range n {
 		err := <-errs
 		require.NoError(t, err)
 	}

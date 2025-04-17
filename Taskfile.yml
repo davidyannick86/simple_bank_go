@@ -164,3 +164,31 @@ tasks:
     - httpyac ./api.http
     - echo "API tests completed."
     silent: true
+
+  ##################################################
+  # Update deps
+  ##################################################
+  update-deps:
+    desc: |
+      Update all dependencies.
+    cmds:
+    - echo "Updating dependencies..."
+    - go get -u ./...
+    - go mod tidy
+    - echo "Dependencies updated."
+    silent: true
+
+  ##################################################
+  # Mocks
+  ##################################################
+  mock:
+    desc: |
+      Generate mocks for the interfaces.
+    preconditions:
+    - sh: command -v mockgen > /dev/null
+      msg: mockgen is not installed. Please install it first.
+    cmds:
+    - echo "Generating mocks..."
+    - mockgen -package mockdb -destination db/mock/store.go github.com/davidyannick86/simple-bank/db/sqlc Store
+    - echo "Mocks generated."
+    silent: true
