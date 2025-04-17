@@ -1,5 +1,9 @@
 version: '3'
 
+dotenv:
+# Load environment variables from .env file
+- ./app.env
+
 vars:
   APP_NAME: "Simple Bank"
   POSTGRE_CONTAINER_NAME: "postgres_simplebank"
@@ -192,4 +196,11 @@ tasks:
     - echo "Running API tests..."
     - httpyac ./api.http
     - echo "API tests completed."
+    silent: true
+
+  coucou:
+    desc: |
+      Just a test task.
+    cmds:
+    - echo "Coucou ! {{.DB_DRIVER}}"
     silent: true
