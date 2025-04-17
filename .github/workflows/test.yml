@@ -45,5 +45,10 @@ jobs:
       - name: Run migrations
         run: migrate -path db/migrations -database "postgresql://postgres:password@localhost:5432/simple_bank?sslmode=disable" -verbose up
 
-      - name: Test
-        run: go test -v -cover -short ./...
+      - name: Install Task Runner
+        run: |
+          curl -sL https://taskfile.dev/install.sh | sh -s -- -b /usr/local/bin
+          task --version
+
+      - name: Run tests via Taskfile
+        run: task test
