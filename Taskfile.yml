@@ -4,12 +4,6 @@ dotenv:
 # Load environment variables from .env file
 - ./app.env
 
-vars:
-  APP_NAME: "Simple Bank"
-  POSTGRE_CONTAINER_NAME: "postgres_simplebank"
-  POSTGRE_URL: "postgresql://postgres:password@localhost:5432/simple_bank?sslmode=disable"
-  MIGRATIONS_DIR: "./db/migrations"
-
 tasks:
 
   ##################################################
@@ -25,9 +19,6 @@ tasks:
     preconditions:
     - sh: docker ps | grep {{.POSTGRE_CONTAINER_NAME}} > /dev/null
       msg: "Postgres container is not running. Please start it first."
-    requires:
-      vars:
-      - POSTGRE_CONTAINER_NAME
     cmds:
     - docker logs {{.POSTGRE_CONTAINER_NAME}}
 
@@ -36,9 +27,6 @@ tasks:
     preconditions:
     - sh: docker ps | grep {{.POSTGRE_CONTAINER_NAME}} > /dev/null
       msg: "Postgres container is not running. Please start it first."
-    requires:
-      vars:
-      - POSTGRE_CONTAINER_NAME
     cmds:
     - docker stop {{.POSTGRE_CONTAINER_NAME}}
     - echo "Postgres container stopped."
@@ -52,9 +40,6 @@ tasks:
     preconditions:
     - sh: docker ps | grep {{.POSTGRE_CONTAINER_NAME}} > /dev/null
       msg: "Postgres container is not running. Please start it first."
-    requires:
-      vars:
-      - POSTGRE_CONTAINER_NAME
     cmds:
     - docker exec -it {{.POSTGRE_CONTAINER_NAME}} psql -U postgres
 
@@ -63,9 +48,6 @@ tasks:
     preconditions:
     - sh: docker ps | grep {{.POSTGRE_CONTAINER_NAME}} > /dev/null
       msg: "Postgres container is not running. Please start it first."
-    requires:
-      vars:
-      - POSTGRE_CONTAINER_NAME
     cmds:
     - echo "Creating database..."
     - docker exec -it {{.POSTGRE_CONTAINER_NAME}} createdb -U postgres simple_bank
@@ -77,9 +59,6 @@ tasks:
     preconditions:
     - sh: docker ps | grep {{.POSTGRE_CONTAINER_NAME}} > /dev/null
       msg: "Postgres container is not running. Please start it first."
-    requires:
-      vars:
-      - POSTGRE_CONTAINER_NAME
     cmds:
     - echo "Dropping database..."
     - docker exec -it {{.POSTGRE_CONTAINER_NAME}} dropdb -f -U postgres simple_bank
@@ -91,9 +70,6 @@ tasks:
     preconditions:
     - sh: docker ps | grep {{.POSTGRE_CONTAINER_NAME}} > /dev/null
       msg: "Postgres container is not running. Please start it first."
-    requires:
-      vars:
-      - POSTGRE_CONTAINER_NAME
     cmds:
     - echo "Dumping schema..."
     - docker exec -it {{.POSTGRE_CONTAINER_NAME}} pg_dump -U postgres -s simple_bank > ./db/schema.sql
@@ -111,7 +87,6 @@ tasks:
     requires:
       vars:
       - CLI_ARGS
-      - MIGRATIONS_DIR
     cmds:
     - echo "Creating migration file..."
     - migrate create -ext sql -dir {{.MIGRATIONS_DIR}} -seq {{.CLI_ARGS}}
@@ -121,26 +96,18 @@ tasks:
   migrate-up:
     desc: |
       To run it : task migrate-up
-    requires:
-      vars:
-      - POSTGRE_URL
-      - MIGRATIONS_DIR
     cmds:
     - echo "Running migrations up..."
-    - migrate -path {{.MIGRATIONS_DIR}} -database {{.POSTGRE_URL}} -verbose up
+    - migrate -path {{.MIGRATIONS_DIR}} -database {{.DB_SOURCE}} -verbose up
     - echo "Migrations up completed."
     silent: true
 
   migrate-down:
     desc: |
       To run it : task migrate-down
-    requires:
-      vars:
-      - POSTGRE_URL
-      - MIGRATIONS_DIR
     cmds:
     - echo "Running migrations down..."
-    - migrate -path {{.MIGRATIONS_DIR}} -database {{.POSTGRE_URL}} down
+    - migrate -path {{.MIGRATIONS_DIR}} -database {{.DB_SOURCE}} down
     - echo "Migrations down completed."
     silent: true
 
@@ -202,5 +169,5 @@ tasks:
     desc: |
       Just a test task.
     cmds:
-    - echo "Coucou ! {{.DB_DRIVER}}"
+    - echo "Coucou ! {{.APP_NAME}} {{.CLI_ARGS}}"
     silent: true
