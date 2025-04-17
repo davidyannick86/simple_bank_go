@@ -163,6 +163,9 @@ tasks:
   test:
     desc: |
       Run all tests.
+    preconditions:
+    - sh: docker ps | grep {{.POSTGRE_CONTAINER_NAME}} > /dev/null
+      msg: "Postgres container is not running. Please start it first."
     cmds:
     - echo "Running tests..."
     - go test -v -cover -count=1 ./...
