@@ -189,6 +189,7 @@ tasks:
       msg: mockgen is not installed. Please install it first.
     cmds:
     - echo "Generating mocks..."
-    - mockgen -package mockdb -destination db/mock/store.go github.com/davidyannick86/simple-bank/db/sqlc Store
+    - mockgen -package {{.MOCKGEN_PACKAGE_NAME}} -destination {{.MOCKGEN_DESTINATION}} {{.MOCKGEN_PACKAGE}} {{.MOCKGEN_INTERFACE}}
+    - go mod tidy
     - echo "Mocks generated."
     silent: true
