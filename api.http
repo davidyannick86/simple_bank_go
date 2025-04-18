@@ -26,3 +26,11 @@ Content-Type: application/json
 }
 
 ### Create User
+POST http://localhost:8080/users
+Content-Type: application/json
+{
+  "username": "Dimi2",
+  "email": "dimi@example.com",
+  "full_name": "Dimitri Tavan",
+  "password": "123456"
+}

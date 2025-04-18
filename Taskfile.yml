@@ -193,3 +193,17 @@ tasks:
     - go mod tidy
     - echo "Mocks generated."
     silent: true
+
+  ##################################################
+  # Reset db
+  ##################################################
+  reset-db:
+    desc: |
+      Reset the database.
+    cmds:
+    - echo "Resetting database..."
+    - task drop-db
+    - task create-db
+    - task migrate-up
+    - echo "Database reset completed."
+    silent: true
