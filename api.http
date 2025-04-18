@@ -2,8 +2,8 @@
 POST http://localhost:8080/accounts
 Content-Type: application/json
 {
-  "owner": "Mimi",
-  "currency": "EUR"
+  "owner": "iowllm",
+  "currency": "USD"
 }
 
 ### Get account
@@ -24,3 +24,5 @@ Content-Type: application/json
   "amount": 100,
   "currency": "USD"
 }
+
+### Create User
