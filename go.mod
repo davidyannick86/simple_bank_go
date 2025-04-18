@@ -5,11 +5,14 @@ go 1.24.2
 require (
 	github.com/gin-gonic/gin v1.10.0
 	github.com/go-playground/validator/v10 v10.26.0
+	github.com/google/uuid v1.6.0
 	github.com/lib/pq v1.10.9
 	github.com/spf13/viper v1.20.1
 	go.uber.org/mock v0.5.1
 	golang.org/x/crypto v0.37.0
 )
+
+require github.com/dgrijalva/jwt-go v3.2.0+incompatible
 
 require (
 	github.com/bytedance/sonic v1.13.2 // indirect
