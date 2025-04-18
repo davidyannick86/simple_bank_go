@@ -2,7 +2,7 @@
   POST http://localhost:8080/users
   Content-Type: application/json
   {
-    "username": "Dimi2",
+    "username": "Dimi3",
     "email": "dimi@example.com",
     "full_name": "Dimitri",
     "password": "123456"
@@ -12,7 +12,7 @@
 POST http://localhost:8080/accounts
 Content-Type: application/json
 {
-  "owner": "Dimi2",
+  "owner": "Dimi3",
   "currency": "USD"
 }
 {{
@@ -54,3 +54,15 @@ Content-Type: application/json
   "amount": 100,
   "currency": "USD"
 }
+
+### Login
+POST http://localhost:8080/users/login
+Content-Type: application/json
+{
+  "username": "Dimi3",
+  "password": "123456"
+}
+{{
+  test.status(200);
+  test.totalTime(300);
+}}
