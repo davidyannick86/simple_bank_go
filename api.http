@@ -1,8 +1,18 @@
+  ### Create User
+  POST http://localhost:8080/users
+  Content-Type: application/json
+  {
+    "username": "Dimi2",
+    "email": "dimi@example.com",
+    "full_name": "Dimitri Tavan",
+    "password": "123456"
+  }
+
 ### Create account
 POST http://localhost:8080/accounts
 Content-Type: application/json
 {
-  "owner": "yybimn",
+  "owner": "Dimi2",
   "currency": "USD"
 }
 {{
@@ -28,7 +38,7 @@ GET http://localhost:8080/accounts?page_id=1&page_size=5
 }}
 
 ### Delete account
-DELETE http://localhost:8080/accounts/4
+DELETE http://localhost:8080/accounts/1
 {{
   test.status(200);
   test.hasResponseBody();
@@ -43,14 +53,4 @@ Content-Type: application/json
   "to_account_id": 3,
   "amount": 100,
   "currency": "USD"
-}
-
-### Create User
-POST http://localhost:8080/users
-Content-Type: application/json
-{
-  "username": "Dimi2",
-  "email": "dimi@example.com",
-  "full_name": "Dimitri Tavan",
-  "password": "123456"
 }
