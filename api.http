@@ -2,18 +2,38 @@
 POST http://localhost:8080/accounts
 Content-Type: application/json
 {
-  "owner": "iowllm",
+  "owner": "yybimn",
   "currency": "USD"
 }
+{{
+  test.status(201);
+  test.totalTime(300);
+  test.hasResponseBody();
+}}
 
 ### Get account
 GET http://localhost:8080/accounts/1
+{{
+  test.status(200);
+  test.totalTime(300);
+  test.hasResponseBody();
+}}
 
 ### Get all accounts
 GET http://localhost:8080/accounts?page_id=1&page_size=5
+{{
+  test.status(200);
+  test.totalTime(300);
+  test.hasResponseBody();
+}}
 
 ### Delete account
-DELETE http://localhost:8080/accounts/1
+DELETE http://localhost:8080/accounts/4
+{{
+  test.status(200);
+  test.hasResponseBody();
+  test.responseBody('{"status":"account deleted"}');
+}}
 
 ### Create transfer
 POST http://localhost:8080/transfers
