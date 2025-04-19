@@ -11,6 +11,16 @@
     "password": "123456"
   }
 
+  ### Create User 2
+  POST http://localhost:8080/users
+  Content-Type: application/json
+  {
+    "username": "Dimi1",
+    "email": "dimi1@example.com",
+    "full_name": "Dimitri1",
+    "password": "123456"
+  }
+
 ### Create account
 POST http://localhost:8080/accounts
 Content-Type: application/json
