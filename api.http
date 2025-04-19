@@ -1,3 +1,6 @@
+@token=v2.local.OXmpGgc6U4mATSaRiDuNkz2pGxQGfn23ie4j-WzYNFKptZboJdzgQoJPVyvzXFUeE6SIHzO05Hg5jLMbNgvUyhrvupvkdPVq5ENpUDL7wtrST2pKBaipEOPm_Mo8BP237nrN2ya5itBaeGJIxtTY0aD5pGiNFwGLfJITWlrusE4JtnfblVAkREQGIDWy758lc-y3Yt3jGGnpE6FaXAWGFwJeK7r2ywMdlsJlUWNLrNgn1G0DZQ52x_XgVJqgd4oe1Mq1OcWokg.bnVsbA
+
+
   ### Create User 
   POST http://localhost:8080/users
   Content-Type: application/json
@@ -11,8 +14,11 @@
 ### Create account
 POST http://localhost:8080/accounts
 Content-Type: application/json
+Authorization: Bearer {{token}}
 {
-  "owner": "Dimi3",
+  "user_id": 1,
+  "account_type": "savings",
+  "balance": 1000,
   "currency": "USD"
 }
 {{
@@ -23,6 +29,11 @@ Content-Type: application/json
 
 ### Get account
 GET http://localhost:8080/accounts/1
+Authorization: Bearer {{token}}
+{
+  "owner": "Dimi3",
+  "currency": "USD"
+}
 {{
   test.status(200);
   test.totalTime(300);
@@ -31,6 +42,15 @@ GET http://localhost:8080/accounts/1
 
 ### Get all accounts
 GET http://localhost:8080/accounts?page_id=1&page_size=5
+Authorization: Bearer {{token}}
+{
+  "accounts": [
+    {
+      "owner": "Dimi3",
+      "currency": "USD"
+    }
+  ]
+}
 {{
   test.status(200);
   test.totalTime(300);
@@ -39,14 +59,20 @@ GET http://localhost:8080/accounts?page_id=1&page_size=5
 
 ### Delete account
 DELETE http://localhost:8080/accounts/1
+Authorization: Bearer {{token}}
 {{
   test.status(200);
+  test.totalTime(300);
   test.hasResponseBody();
-  test.responseBody('{"status":"account deleted"}');
 }}
+{
+  "status": "account deleted"
+}
+
 
 ### Create transfer
 POST http://localhost:8080/transfers
+Authorization: Bearer {{token}}
 Content-Type: application/json
 {
   "from_account_id": 2,
@@ -66,3 +92,4 @@ Content-Type: application/json
   test.status(200);
   test.totalTime(300);
 }}
+
