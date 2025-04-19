@@ -1,0 +1,35 @@
+services:
+  simple_bank:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: simple_bank
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      # fix healthcheck to use container env var; avoid host interpolation
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: simplebank_api
+    ports:
+      - "8080:8080"
+    depends_on:
+      simple_bank:
+        condition: service_healthy
+    environment:
+      DB_DRIVER: postgres
+      DB_SOURCE: "postgresql://postgres:password@simple_bank:5432/simple_bank?sslmode=disable"
+
+volumes:
+  postgres_data:
